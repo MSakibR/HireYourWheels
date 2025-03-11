@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from HireCar import views as Hire_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('history/',Hire_views.history,name='history'),
+    path('',Hire_views.home,name='home'),
+    path('profile/',Hire_views.profile,name='profile'),
+    
 ]
