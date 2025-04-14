@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-    <h1>This is the Home page</h1>
-    {% endblock content %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% for car in car %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{car.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{car.model_year}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{car.car_type}}</h6>
+        <p class="card-text">{{car.status}}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

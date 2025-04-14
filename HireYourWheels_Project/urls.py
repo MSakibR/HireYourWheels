@@ -21,8 +21,7 @@ from HireCar import views as Hire_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('history/',Hire_views.history,name='history'),
-    path('',Hire_views.home,name='home'),
-    path('profile/',Hire_views.profile,name='profile'),
+    path('', Hire_views.home, name='home'),
+    path('profile', Hire_views.profile, name='profile'),
     
 ]

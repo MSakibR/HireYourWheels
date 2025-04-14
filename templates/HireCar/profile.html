@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-    <h1>This is the profile Page</h1>
-    {% endblock content %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% for ty in type %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ty.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ty.description}}</h6>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
