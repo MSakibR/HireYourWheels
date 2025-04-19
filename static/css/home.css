@@ -1,0 +1,48 @@
+/* Example of some basic styles for your card */
+.card {
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Container for cards to be displayed in a row direction */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(300px, 1fr)
+  ); /* Multiple columns, auto-adjusts to screen size */
+  gap: 20px; /* Space between each card */
+  align-items: start; /* Align items to the top */
+  justify-items: center; /* Align cards in the center horizontally */
+}
+
+.center-button {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}

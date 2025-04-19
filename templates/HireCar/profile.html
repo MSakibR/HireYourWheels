@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Profile{% endblock %}
+{% load static %}
 {% block content %}
-{% for ty in type %}
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">{{ty.name}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ty.description}}</h6>
+<div class="profile-container">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.username }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
+        </div>
     </div>
 </div>
-{% endfor %}
+
+<div class="center-button">
+    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+</div>
 {% endblock %}

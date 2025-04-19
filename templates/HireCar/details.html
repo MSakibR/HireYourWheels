@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Details{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Name - {{ car.name }}</h2>
+<h3>Status: {{ car.status }}</h3>
+
+<!-- Update Button -->
+<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+    <div class="text-center">
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'update_car' car.c_id %}">Update</a>
+    </div>
+</div>
+
+<!-- Delete Button (submit form) -->
+<form method="POST" action="{% url 'delete_car' car.c_id %}">
+    {% csrf_token %}
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-danger mt-auto">Delete</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
