@@ -31,5 +31,6 @@ urlpatterns = [
     path('signup/', Hire_views.signup_view, name='signup'),
     path('', Hire_views.login_view, name='login'),
     path('logout/', Hire_views.logout_view, name='logout'),
+    path('verify/', Hire_views.verify_otp, name='verify_otp'),
     
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

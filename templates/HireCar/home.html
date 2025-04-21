@@ -16,7 +16,9 @@
 <div class="card-container">
     {% for car in car %}
     <div class="card" style="width: 18rem;">
+        {% if car.image %}
         <img class="card-img-top" src="{{ car.image.url }}" alt="Car">
+        {% endif %}
         <div class="card-body">
             <h5 class="card-title">{{ car.name }}</h5>
             <p class="card-text">{{ car.status }}</p>

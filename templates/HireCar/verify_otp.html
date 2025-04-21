@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}demo{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Enter the OTP sent to your email</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Verify</button>
+</form>
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+{% endblock %}
