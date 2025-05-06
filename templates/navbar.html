@@ -1,18 +1,86 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">HireYourWheels</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">profile</a>
-                </li>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <!-- Topbar Start -->
+    <div class="container-fluid topbar bg-secondary d-none d-xl-block w-100">
+        <div class="container">
+            <div class="row gx-0 align-items-center" style="height: 45px;">
+                <div class="col-lg-6 text-center text-lg-start mb-lg-0">
+                    <div class="d-flex flex-wrap">
+                        <a href="https://maps.app.goo.gl/g3yioyAw5rW1sELi7" class="text-muted me-4"><i class="fas fa-map-marker-alt text-primary me-2"></i>Find
+                            Location</a>
+                        <a href="tel:+01234567890" class="text-muted me-4"><i
+                                class="fas fa-phone-alt text-primary me-2"></i>+8801981410182</a>
+                        <a href="mailto:example@gmail.com" class="text-muted me-0"><i
+                                class="fas fa-envelope text-primary me-2"></i>hireyourwheels@gmail.com</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-end">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <a href="#" class="btn btn-light btn-sm-square rounded-circle me-3"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-light btn-sm-square rounded-circle me-3"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-light btn-sm-square rounded-circle me-3"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-light btn-sm-square rounded-circle me-0"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
+    <!-- Topbar End -->
+    
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid nav-bar sticky-top px-0 px-lg-4 py-2 py-lg-0">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a href="{% url 'landing' %}" class="navbar-brand p-0 d-flex align-items-center">
+                    <img src="{% static 'assets/log.png' %}" alt="Logo" style="height: 10px; width: auto; margin-right: 8px;">
+                    <span style="color: red;">HireYourWheels</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto py-0">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'hire' %}" class="nav-item nav-link">Hire Car</a>
+                        <a href="{% url 'host' %}" class="nav-item nav-link">Host Car</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Hire Car</a>
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Host Car</a>
+                        {% endif %}
+                        <a href="{% url 'services' %}" class="nav-item nav-link">Service</a>
+                        <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                        <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                        
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="nav-item nav-link">Profile</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                        {% endif %}
+
+                        
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'hire' %}" class="btn btn-primary rounded-pill py-2 px-4">Get Started</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary rounded-pill py-2 px-4">Get Started</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar & Hero End -->
+
+</body>
+
+</html>

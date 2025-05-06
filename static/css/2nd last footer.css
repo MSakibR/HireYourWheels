@@ -1,0 +1,62 @@
+.host-container {
+  display: none;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  width: 80%;
+  max-width: 1200px; /* Adjust width as needed */
+  margin: auto;
+  padding: 20px;
+  background: transparent;
+  border-radius: 10px;
+  min-height: 65vh; /* Takes full viewport height */
+}
+
+
+/* Full-width container for left-right layout */
+.host-content {
+  display: flex;
+  flex-direction: column; /* Stack sections vertically */
+  width: 80%;
+  max-width: 1200px; /* Adjust based on your design */
+  margin: 20px auto;
+}
+
+/* Each section takes full width */
+.host-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* Left text, right image */
+.left-text {
+  flex-direction: row;
+}
+
+/* Right text, left image */
+.right-text {
+  flex-direction: row;
+}
+
+/* Content inside each section */
+.host-text {
+  width: 50%;
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.host-image {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.host-image img {
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+}

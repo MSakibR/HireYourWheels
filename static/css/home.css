@@ -1,48 +1,112 @@
-/* Example of some basic styles for your card */
-.card {
-  margin: 20px;
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 25px 0;
+  border-radius: 20px;
+  background: transparent; /* Ensure it doesn't override */
+  color: #1c3342; /* Dark blue text */
+  background: #e6edf0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto; /* Center the container */
+}
+
+.hero-content {
+  /* New wrapper for flexbox layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically align items */
+  padding: 50px;
+}
+
+.hero-left {
+  flex: 1; /* Takes up available space */
+  padding-right: 40px; /* Space between text and image */
+}
+
+.hero-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-left p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  /* Style the buttons container */
+  display: flex; /* Arrange buttons horizontally */
+}
+
+.blue-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.blue-button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.hero-right {
+  flex: 1;
+  position: relative;
+  height: 400px; /* Set a fixed height for the slider */
+  overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-img-top {
-  border-radius: 10px 10px 0 0;
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.card-body {
-  text-align: center;
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures the entire image is visible */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  background: transparent; /* No background to maintain PNG transparency */
 }
 
-.card-title {
-  font-size: 1.5rem;
+.slide.active {
+  opacity: 1;
+}
+
+.big-text {
+  font-size: 25px; /* Larger size */
+  font-family: "Arial", sans-serif; /* First font style */
   font-weight: bold;
 }
-
-.card-text {
-  font-size: 1rem;
-  color: #555;
+.small-text {
+  font-size: 20px; /* Smaller size */
+  font-family: "Courier New", monospace; /* Second font style */
 }
 
-/* Container for cards to be displayed in a row direction */
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(300px, 1fr)
-  ); /* Multiple columns, auto-adjusts to screen size */
-  gap: 20px; /* Space between each card */
-  align-items: start; /* Align items to the top */
-  justify-items: center; /* Align cards in the center horizontally */
+.host-content {
+  display: flex;
+  flex-direction: column; /* Stack sections vertically */
+  width: 80%;
+  max-width: 1200px; /* Adjust based on your design */
+  margin: 60px auto;
 }
 
-.center-button {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}

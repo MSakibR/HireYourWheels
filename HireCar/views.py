@@ -1,109 +1,147 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
-from .models import EmailOTP
-from .forms import EmailForm, OTPForm
+from .utils import *
 import random
-from .utils import generate_and_send_otp
+from django.contrib import messages
 
-# Create your views here.
+def landing(request):
+    return render(request, 'HireCar/landing.html')
 
-def home(request):
+def contact(request):
+    return render(request, 'HireCar/contact.html')
+
+def about(request):
+    return render(request, 'HireCar/about.html')
+
+def services(request):
+    return render(request, 'HireCar/services.html')
+
+def host(request):
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES)
+        if form.is_valid():
+            car = form.save(commit=False)
+            car.owner = request.user  # 👈 Assign the current user as owner
+            car.save()
+            return redirect('landing')
+    else:
+        form = CarForm()
+    return render(request, 'HireCar/host.html', {'form': form})
+
+def hire(request):
     car = Car.objects.all()
-    context={
-        'car': car
-    }
-    return render(request, template_name ='HireCar\home.html',context=context) 
+    return render(request, 'HireCar/hire.html', {'car': car})
 
 def profile(request):
-    cartype = CarType.objects.all()
-    context = {
-        'type': cartype
-    }
-    return render(request, template_name ='HireCar\profile.html',context=context) 
+    # Get the user's hosted cars and reservations
+    hosted_cars = Car.objects.filter(owner=request.user)
+    hired_cars = Reservation.objects.filter(user=request.user)
 
-def details(request,id):
-    car = Car.objects.get(pk = id)
-    context = {
-        'car':car,
-    }
-    return render(request, template_name ='HireCar\details.html',context=context) 
+    # Pass the actual cars and reservations to the template
+    return render(request, 'HireCar/profile.html', {
+        'hosted_cars': hosted_cars,
+        'hired_cars': hired_cars,
+    })
 
 
-def upload_car(request):
-   form = CarForm()
-   if request.method == 'POST':
-       form = CarForm(request.POST, request.FILES)
-       if form.is_valid():
-           form.save()
-           return redirect('home')  # Redirect after saving the car
-   context = {'form': form}
-   return render(request, template_name='HireCar/car_form.html', context=context)
+def details(request, id):
+    car = get_object_or_404(Car, pk=id)
+    form = ReservationForm()
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.car = car  # Connect the reservation with the car
+            reservation.user = request.user  # 👈 Assign the current user as owner
+            reservation.save()
+            return redirect('landing')
+
+    return render(request, 'HireCar/details.html', {'car': car, 'form': form})
 
 def update_car(request, id):
-   car = Car.objects.get(pk=id)
-   form = CarForm(instance=car)
-   if request.method == 'POST':
-       form = CarForm(request.POST, request.FILES, instance=car)
-       if form.is_valid():
-           form.save()
-           return redirect('home')  # Redirect after updating the car
-   context = {'form': form}
-   return render(request, template_name='HireCar/car_form.html', context=context)
+    car = get_object_or_404(Car, pk=id)
+    form = CarForm(instance=car)
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES, instance=car)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # You may want to redirect to profile to see updated details
+    return render(request, 'HireCar/update.html', {'form': form})
 
 def delete_car(request, id):
-    car = get_object_or_404(Car, pk=id)  # Use get_object_or_404 to handle invalid IDs gracefully
+    car = get_object_or_404(Car, pk=id)
     if request.method == 'POST':
         car.delete()
-        return redirect('home')  # Redirect to home after deletion
-
-
-def signup_view(request):
+        return redirect('profile')
+    
+def update_reservation(request, id):
+    reservation = get_object_or_404(Reservation, pk=id)
+    form = ReservationForm(instance=reservation)
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = ReservationForm(request.POST, request.FILES, instance=reservation)
         if form.is_valid():
-            user = form.save()  # Save the user
-            email = user.email
-            otp = generate_and_send_otp(email)  # Generate & send OTP
-            EmailOTP.objects.create(email=email, otp=otp)  # Save OTP in DB
-            request.session['email'] = email  # Store email in session
-            return redirect('verify_otp')  # Redirect to OTP verification
-    else:
-        form = SignupForm()
-    return render(request, 'HireCar/signup.html', {'form': form, 'hide_nav_footer': True})
+            form.save()
+            return redirect('profile')  # You may want to redirect to profile to see updated details
+    return render(request, 'HireCar/update.html', {'form': form})
 
-def login_view(request):
+def delete_reservation(request, id):
+    reservation = get_object_or_404(Reservation, pk=id)
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
+        reservation.delete()
+        return redirect('profile')
+
+def login_signup_view(request):
+    if request.method == 'POST':
+        if 'full_name' in request.POST:
+            # Signup form submitted
+            signup_form = SignupForm(request.POST)
+            login_form = LoginForm()
+            if signup_form.is_valid():
+                user = signup_form.save(commit=False)
+                user.is_active = True  # Directly activate user
+                user.is_staff = False
+                user.is_superuser = False
+                user.save()
+
+                auth_login(request, user)  # Log the user in after signup
+                messages.success(request, 'Account created and logged in successfully!')
+                return redirect('login')
             else:
-                form.add_error(None, 'Invalid username or password')
+                messages.error(request, 'Signup failed. Please correct the errors below.')
+        else:
+            # Login form submitted
+            login_form = LoginForm(request, data=request.POST)
+            signup_form = SignupForm()
+            if login_form.is_valid():
+                user = login_form.get_user()
+                auth_login(request, user)
+                messages.success(request, 'Logged in successfully!')
+                return redirect('landing')
+            else:
+                messages.error(request, "Invalid login credentials. Please try again.")
     else:
-        form = LoginForm()
-    return render(request, 'HireCar/login.html', {'form': form, 'hide_nav_footer': True})
+        signup_form = SignupForm()
+        login_form = LoginForm()
 
+    return render(request, 'login.html', {
+        'login_form': login_form,
+        'signup_form': signup_form,
+    })
+
+'''
 @login_required
 def logout_view(request):
-    logout(request)
+    auth_logout(request)
     return redirect('login')
 
-
-def generate_otp():
-    return str(random.randint(100000, 999999))
-
 def verify_otp(request):
-    email = request.session.get('email')  # Retrieve the email from the session
+    email = request.session.get('email')
     if not email:
-        return redirect('signup')  # If no email, redirect to signup
+        return redirect('signup')
 
     if request.method == 'POST':
         form = OTPForm(request.POST)
@@ -112,19 +150,16 @@ def verify_otp(request):
             try:
                 otp_record = EmailOTP.objects.filter(email=email).latest('created_at')
                 if otp_record.is_expired():
-                    return render(request, 'HireCar/verify_otp.html', {'form': form, 'error': 'OTP expired'})
+                    return render(request, 'HireCar/otp.html', {'form': form, 'error': 'OTP expired'})
                 if otp_record.otp == otp_input:
-                    # OTP is valid, log the user in
-                    user = authenticate(email=email)  # Authenticate the user by email
-                    if user:
-                        login(request, user)  # Log the user in
-                        return redirect('home')  # Redirect to home page after login
-                    else:
-                        return render(request, 'HireCar/verify_otp.html', {'form': form, 'error': 'User not found'})
+                    user = User.objects.get(email=email)
+                    auth_login(request, user)
+                    return redirect('landing')
                 else:
-                    return render(request, 'HireCar/verify_otp.html', {'form': form, 'error': 'Invalid OTP'})
+                    return render(request, 'HireCar/otp.html', {'form': form, 'error': 'Invalid OTP'})
             except EmailOTP.DoesNotExist:
-                return redirect('signup')  # If OTP record doesn't exist, redirect to signup
+                return redirect('signup')
     else:
         form = OTPForm()
-    return render(request, 'HireCar/verify_otp.html', {'form': form})
+    return render(request, 'HireCar/otp.html', {'form': form})
+'''

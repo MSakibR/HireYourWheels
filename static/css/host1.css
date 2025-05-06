@@ -1,0 +1,72 @@
+#host-form {
+    width: 100%;
+}
+
+#host-form .form-row {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+}
+
+#host-form .form-group {
+    flex: 1;
+    min-width: 48%;
+}
+
+#host-form label {
+    font-weight: 500;
+    font-size: 0.82rem;
+    color: #ffffff;
+    margin-bottom: 0.2rem;
+    display: block;
+}
+
+#host-form input[type="text"],
+#host-form input[type="number"],
+#host-form input[type="file"],
+#host-form input[type="date"],
+#host-form select,
+#host-form textarea {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#host-form input:hover,
+#host-form select:hover,
+#host-form textarea:hover {
+    border-color: #4CAF50;
+    background-color: #fff;
+}
+
+#host-form input:focus,
+#host-form select:focus,
+#host-form textarea:focus {
+    border-color: #4CAF50;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+}
+
+#host-form .submit-button {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    transition: 0.3s;
+    margin-top: 0.8rem;
+}
+
+#host-form .submit-button:hover {
+    background-color: #45a049;
+}
+

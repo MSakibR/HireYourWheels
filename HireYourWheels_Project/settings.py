@@ -133,7 +133,10 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'  # after successful login
 LOGOUT_REDIRECT_URL = 'login'
 
+AUTH_USER_MODEL = 'HireCar.CustomUser'
 
+
+'''
 # Email config
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -151,3 +154,4 @@ AUTHENTICATION_BACKENDS = [
     'HireYourWheels_Project.auth_backends.EmailBackend',  # Replace with your actual project name
     'django.contrib.auth.backends.ModelBackend',
 ]
+'''
