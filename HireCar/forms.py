@@ -66,3 +66,9 @@ class EmailForm(forms.Form):
 
 class OTPForm(forms.Form):
     otp = forms.CharField(max_length=6)
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture', 'bio']

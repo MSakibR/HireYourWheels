@@ -50,9 +50,13 @@
                         like your Own Car</span>
                 </p>
                 <div class="hero-buttons">
-                    <a href="{% url 'hire' %}" class="blue-button">Rent a Car</a>
-                    <a href="{% url 'host' %}" class="blue-button">Host a Car</a>
-
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'hire' %}" class="blue-button">Hire Car</a>
+                    <a href="{% url 'host' %}" class="blue-button">Host Car</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="blue-button">Rent a Car</a>
+                    <a href="{% url 'login' %}" class="blue-button">Host a Car</a>
+                    {% endif %}
                 </div>
             </div>
 

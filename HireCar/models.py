@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         if not username:
@@ -110,20 +111,39 @@ class Reservation(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    # You can add other profile-specific fields if needed, like profile picture, bio, etc.
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Profile of {self.user.username}"
+        return f"{self.user.username}"
 
-    @property
-    def cars(self):
-        return self.user.cars.all()
 
-    @property
-    def reservations(self):
-        return self.user.reservations.all()
+class Notification(models.Model):
+    id = models.UUIDField(
+        primary_key=True, 
+        default=uuid.uuid4, 
+        editable=False
+        )
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')
+    message = models.CharField(max_length=255)
+    read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    reservation = models.ForeignKey(Reservation, null=True, blank=True, on_delete=models.CASCADE)  # Related reservation (if applicable)
+
+    def __str__(self):
+        return f"Notification for {self.user.username} at {self.timestamp}"
+
+    def mark_as_read(self):
+        self.read = True
+        self.save()
+
+    def mark_as_unread(self):
+        self.read = False
+        self.save()
+
+    class Meta:
+        ordering = ['-timestamp']  # To show the latest notifications first
+
 
 '''    
 class EmailOTP(models.Model):
@@ -134,3 +154,4 @@ class EmailOTP(models.Model):
     def is_expired(self):
         return timezone.now() > self.created_at + timedelta(minutes=5)
 '''
+

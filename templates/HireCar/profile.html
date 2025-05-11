@@ -6,6 +6,7 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <script src="{% static 'js/landing.js' %}" defer></script>
+    <script src="{% static 'js/profile.js' %}" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -44,94 +45,166 @@
 </head>
 
 <div style="text-align: center; margin-top: 50px;">
-    <h2>Welcome, {{ user.full_name|default:user.username }}!</h2>
+    <div style="max-width: 1000px; margin: 50px auto; padding: 20px; font-family: 'Segoe UI', sans-serif; color: #333;">
+        <div
+            style="display: flex; background-color: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden;">
 
-    <table class="table">
-        <tr>
-            <th>Username:</th>
-            <td>{{ user.username }}</td>
-        </tr>
-        <tr>
-            <th>Full Name:</th>
-            <td>{{ user.full_name }}</td>
-        </tr>
-        <tr>
-            <th>Phone:</th>
-            <td>{{ user.phone }}</td>
-        </tr>
-        <tr>
-            <th>Email:</th>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <th>Address:</th>
-            <td>{{ user.address }}</td>
-        </tr>
-        <tr>
-            <th>Role:</th>
-            <td>{{ user.role }}</td>
-        </tr>
-        <tr>
-            <th>Date Joined:</th>
-            <td>{{ user.date_joined }}</td>
-        </tr>
-    </table>
+            <!-- Left Side -->
+            <div style="flex: 1; padding: 30px; text-align: center; border-right: 1px solid #ddd;">
+                {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Image"
+                    style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;">
+                {% else %}
+                <img src="{% static 'default_profile.png' %}" alt="Default Profile Image"
+                    style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;">
+                {% endif %}
 
-    <div class="dropdown" >
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            Activity Summary
-        </button>
-        <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto; width: 300px;">
-            <li>
-                <a class="dropdown-item" href="#">
-                    <strong>Cars Hosted:</strong>
-                    <ul>
-                        {% for car in hosted_cars %}
-                        <li>
-                            {{ car.make }}
-                            <a href="{% url 'update_car' car.c_id %}" class="btn btn-info btn-sm ms-2">Update</a>
-                            <form method="POST" action="{% url 'delete_car' car.c_id %}" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm ms-2" >
-                                    Delete
-                                </button>
-                            </form>
-                        </li>
-                        {% empty %}
-                        <li>No cars hosted yet.</li>
-                        {% endfor %}
-                    </ul>
-                   
+                <h2 style="margin-top: 15px;">{{ user.full_name|default:user.username }}</h2>
+
+                <div style="max-width: 300px; margin: 10px auto; padding: 10px; color: #555;">
+                    <h5 style="margin-bottom: 6px; font-weight: bold; color: #333;">Bio</h5>
+                    <div
+                        style="min-height: 100px; max-height: 200px; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+                        {{ profile.bio|default:"No bio available." }}
+                    </div>
+                </div>
+
+
+                <!-- Edit Profile Button -->
+                <a href="{% url 'profile_upload' %}"
+                    style="display: inline-block; margin-top: 15px; background-color: #3498db; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                    Edit Profile
                 </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#">
-                    <strong>Cars Reserved:</strong>
-                    <ul>
-                        {% for reservation in hired_cars %}
+
+                <!-- Activity Summary Button -->
+                <div class="dropdown" style="margin-top: 20px;">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Activity Summary
+                    </button>
+                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto; width: 300px;">
                         <li>
-                            {{ reservation.car.make }}
-                            <a href="{% url 'update_reservation' reservation.r_id %}" class="btn btn-info btn-sm ms-2">Update</a>
-                            <form method="POST" action="{% url 'delete_reservation' reservation.r_id %}" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm ms-2">Delete</button>
-                            </form>
+                            <a class="dropdown-item" href="#">
+                                <strong>Cars Hosted:</strong>
+                                <ul>
+                                    {% for car in hosted_cars %}
+                                    <li>
+                                        {{ car.make }}
+                                        <a href="{% url 'update_car' car.c_id %}"
+                                            class="btn btn-info btn-sm ms-2">Update</a>
+                                        <form method="POST" action="{% url 'delete_car' car.c_id %}"
+                                            style="display: inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm ms-2">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                    {% empty %}
+                                    <li>No cars hosted yet.</li>
+                                    {% endfor %}
+                                </ul>
+                            </a>
                         </li>
-                        {% empty %}
-                        <li>No cars reserved yet.</li>
-                        {% endfor %}
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <strong>Cars Reserved:</strong>
+                                <ul>
+                                    {% for reservation in hired_cars %}
+                                    <li>
+                                        {{ reservation.car.make }}
+                                        <a href="{% url 'update_reservation' reservation.r_id %}"
+                                            class="btn btn-info btn-sm ms-2">Update</a>
+                                        <form method="POST" action="{% url 'delete_reservation' reservation.r_id %}"
+                                            style="display: inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm ms-2">Delete</button>
+                                        </form>
+                                    </li>
+                                    {% empty %}
+                                    <li>No cars reserved yet.</li>
+                                    {% endfor %}
+                                </ul>
+                            </a>
+                        </li>
                     </ul>
-                </a>
-            </li>
-        </ul>
+                </div>
+
+                <!-- Logout Button -->
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" style="margin-top: 20px;">Logout</button>
+                </form>
+            </div>
+
+            <!-- Right Side -->
+            <div style="flex: 2; padding: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 26px; color: #2c3e50; text-align: center; margin-left: 0px;">User Profile</h2>
+                    <a href="{% url 'notification_list' %}" style="position: relative; display: inline-block;">
+                        <button
+                            style="background-color: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; position: relative;">
+                            🔔 Notifications
+                            {% if unread_count > 0 %}
+                            <span style="
+                                                        position: absolute;
+                                                        top: -5px;
+                                                        right: -5px;
+                                                        background-color: red;
+                                                        color: white;
+                                                        border-radius: 50%;
+                                                        padding: 3px 6px;
+                                                        font-size: 12px;
+                                                        line-height: 1;
+                                                    ">
+                                {{ unread_count }}
+                            </span>
+                            {% endif %}
+                        </button>
+                    </a>                    
+                </div>
+
+                <hr style="border: 0; height: 3px; background-color: #2c3e50; margin-bottom: 20px;">
+
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Username:</span>
+                        <span style="text-align: right; color: #222;">{{ user.username }}</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Full Name:</span>
+                        <span style="text-align: right; color: #222;">{{ user.full_name }}</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Phone:</span>
+                        <span style="text-align: right; color: #222;">{{ user.phone }}</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Email:</span>
+                        <span style="text-align: right; color: #222;">{{ user.email }}</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Address:</span>
+                        <span style="text-align: right; color: #222;">{{ user.address }}</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Role:</span>
+                        <span style="text-align: right; color: #222;">{{ user.role }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 8px;">
+                        <span style="font-weight: 600; color: #555;">Date Joined:</span>
+                        <span style="text-align: right; color: #222;">{{ user.date_joined }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-<div style="margin-top: 20px; margin-bottom: 20px;"></div>
-
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Logout</button>
-    </form>
 </div>
-<div style="margin-top: 20px; margin-bottom: 20px;"></div>
+
+
 {% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+
+
+<head>
+    <script src="{% static 'js/pay.js' %}" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+</head>
+
+<div class="container"
+    style="background: #fff; padding: 30px 40px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); max-width: 600px; width: 100%; text-align: center;">
+    <h2 style="margin-bottom: 20px; color: #333;">Select Payment Method</h2>
+    <div class="payment-options"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; margin: 30px 0;">
+        <div class="payment-card" onclick="selectPayment(this)"
+            style="border: 2px solid #ccc; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s ease; background: #f9f9f9;">
+            <img src="https://images.seeklogo.com/logo-png/27/1/bkash-logo-png_seeklogo-273684.png" alt="bKash"
+                style="height: 50px; margin-bottom: 10px;">
+            <span style="display: block; font-size: 14px; color: #333;">bKash</span>
+        </div>
+        <div class="payment-card" onclick="selectPayment(this)"
+            style="border: 2px solid #ccc; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s ease; background: #f9f9f9;">
+            <img src="https://images.seeklogo.com/logo-png/35/1/nagad-logo-png_seeklogo-355240.png" alt="Nagad" style="height: 50px; margin-bottom: 10px;">
+            <span style="display: block; font-size: 14px; color: #333;">Nagad</span>
+        </div>
+        <div class="payment-card" onclick="selectPayment(this)"
+            style="border: 2px solid #ccc; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s ease; background: #f9f9f9;">
+            <img src="https://images.seeklogo.com/logo-png/31/1/dutch-bangla-rocket-logo-png_seeklogo-317692.png"
+                alt="Rocket" style="height: 50px; margin-bottom: 10px;">
+            <span style="display: block; font-size: 14px; color: #333;">Rocket</span>
+        </div>
+        <div class="payment-card" onclick="selectPayment(this)"
+            style="border: 2px solid #ccc; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s ease; background: #f9f9f9;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa"
+                style="height: 35px; margin-bottom: 10px;">
+            <span style="display: block; font-size: 14px; color: #333;">Visa</span>
+        </div>
+        <div class="payment-card" onclick="selectPayment(this)"
+            style="border: 2px solid #ccc; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s ease; background: #f9f9f9;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard"
+                style="height: 50px; margin-bottom: 10px;">
+            <span style="display: block; font-size: 14px; color: #333;">MasterCard</span>
+        </div>
+    </div>
+    <button onclick="submitPayment()"
+        style="padding: 12px 24px; border: none; background-color: #007bff; color: white; font-size: 16px; border-radius: 8px; cursor: pointer; transition: background 0.3s;">Continue</button>
+</div>
+
+
+{% endblock %}

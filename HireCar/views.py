@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .utils import *
 import random
 from django.contrib import messages
+from .filters import *
 
 def landing(request):
     return render(request, 'HireCar/landing.html')
@@ -31,36 +32,85 @@ def host(request):
         form = CarForm()
     return render(request, 'HireCar/host.html', {'form': form})
 
+
+
 def hire(request):
-    car = Car.objects.all()
-    return render(request, 'HireCar/hire.html', {'car': car})
+    search_query = request.GET.get('search', '')
+    car_queryset = Car.objects.all()
+
+    # Search filter (make or model)
+    if search_query:
+        car_queryset = car_queryset.filter(
+            models.Q(make__icontains=search_query) |
+            models.Q(model__icontains=search_query)
+        )
+
+    # Apply additional filters from CarFilter
+    car_filter = CarFilter(request.GET, queryset=car_queryset)
+    filtered_cars = car_filter.qs
+
+    return render(request, 'HireCar/hire.html', {
+        'car': filtered_cars,
+        'search_query': search_query,
+        'car_filter': car_filter,
+    })
+
 
 def profile(request):
     # Get the user's hosted cars and reservations
     hosted_cars = Car.objects.filter(owner=request.user)
     hired_cars = Reservation.objects.filter(user=request.user)
+    try:
+        profile = Profile.objects.get(user=request.user) 
+    except Profile.DoesNotExist:
+        profile = None
 
     # Pass the actual cars and reservations to the template
     return render(request, 'HireCar/profile.html', {
         'hosted_cars': hosted_cars,
         'hired_cars': hired_cars,
+        'profile':profile,
     })
 
+def profile_upload(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user  # 👈 Assign the current user
+            profile.save()
+            return redirect('profile')  # Redirect after successful upload
+    else:
+        form = ProfileUpdateForm()
+    return render(request, 'HireCar/update.html', {'form': form})
 
 def details(request, id):
     car = get_object_or_404(Car, pk=id)
     form = ReservationForm()
+
+    # Check if the car is available
+    if not car.availability:
+        # Pass an error message to the template if the car is not available
+        return render(request, 'HireCar/details.html', {'car': car, 'form': form, 'error_message': 'This car is not available for reservation.'})
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.car = car  # Connect the reservation with the car
-            reservation.user = request.user  # 👈 Assign the current user as owner
+            reservation.user = request.user  # Assign the current user as renter
             reservation.save()
+
+            # Notify the car owner (host) about the reservation
+            host = car.owner
+            notification_message = f"Your car {car.make} {car.model} has been reserved by {request.user.full_name}. Please confirm the reservation."
+            Notification.objects.create(user=host, message=notification_message, reservation=reservation)
+
             return redirect('landing')
 
     return render(request, 'HireCar/details.html', {'car': car, 'form': form})
+
+
 
 def update_car(request, id):
     car = get_object_or_404(Car, pk=id)
@@ -131,6 +181,47 @@ def login_signup_view(request):
         'login_form': login_form,
         'signup_form': signup_form,
     })
+
+
+def notification_list(request):
+    # Fetch all notifications for the logged-in user, ordered by the latest
+    notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+
+    context = {
+        'notifications': notifications,
+    }
+    return render(request, 'HireCar/notification_list.html', context)
+
+
+def mark_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+
+    # Mark the notification as read
+    notification.mark_as_read()
+
+    # If the notification is related to a reservation, notify the renter to make the payment
+    if notification.reservation:
+        reservation = notification.reservation
+        renter = reservation.user
+        payment_message = f"Your reservation for {reservation.car.make} {reservation.car.model} has been confirmed by the host. Please proceed with the payment."
+        Notification.objects.create(user=renter, message=payment_message, reservation=reservation)
+
+    # Redirect back to the notification list or wherever appropriate
+    return redirect('notification_list')
+
+
+def mark_all_as_read(request):
+    # Mark all unread notifications as read
+    notifications = Notification.objects.filter(user=request.user, read=False)
+    notifications.update(read=True)
+
+    # Redirect back to the notification list or homepage
+    return redirect('notification_list')
+
+def payment_page(request):
+    return render(request, 'HireCar/payment_page.html')
+
+
 
 '''
 @login_required

@@ -18,6 +18,7 @@ urlpatterns = [
     path('host/', Hire_views.host, name='host'),
     path('hire/', Hire_views.hire, name='hire'),
     path('profile/', Hire_views.profile, name='profile'),
+    path('profile/upload', Hire_views.profile_upload, name='profile_upload'),
     path('details/<uuid:id>/', Hire_views.details, name='details'),
 
     #path('upload/', Hire_views.upload_car, name='upload_car'),
@@ -25,6 +26,13 @@ urlpatterns = [
     path('delete/<uuid:id>/', Hire_views.delete_car, name='delete_car'),
     path('update_reservation/<uuid:id>/', Hire_views.update_reservation, name='update_reservation'),
     path('delete_reservation/<uuid:id>/', Hire_views.delete_reservation, name='delete_reservation'),
+    #path('profile/update/', Hire_views.update_profile, name='update_profile'),
 
     #path('verify/', Hire_views.verify_otp, name='verify_otp'),
+    path('notifications/', Hire_views.notification_list, name='notification_list'),
+    path('notifications/mark_as_read/<uuid:notification_id>/', Hire_views.mark_as_read, name='mark_as_read'),
+    path('notifications/mark_all_as_read/', Hire_views.mark_all_as_read, name='mark_all_as_read'),
+    path('payment/', Hire_views.payment_page, name='payment_page'),
+
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

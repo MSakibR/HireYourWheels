@@ -3,5 +3,5 @@ from .models import *
 # Register your models here.
 
 admin.site.register([
-    CarType, Car, CustomUser,Reservation,Profile
+    CarType, Car, CustomUser,Reservation,Profile,Notification
     ])

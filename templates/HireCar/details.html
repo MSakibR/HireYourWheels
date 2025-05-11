@@ -69,11 +69,17 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
+                {% if error_message %}
+                <div class="alert alert-danger">
+                    {{ error_message }}
+                </div>
+                {% endif %}
                 <div class="d-flex justify-content-between">
                     <a href="{% url 'hire' %}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-success">Confirm Booking</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
