@@ -24,9 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8t^_s!og4^u2()a%yie189m9-4v&k2h_wcc6_h8g7fl%cilpjj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "hire-your-wheels.vercel.app",
+    ".vercel.app",
+]
 
 
 # Application definition
