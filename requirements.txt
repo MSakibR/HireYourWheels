@@ -1,8 +1,8 @@
-asgiref==3.8.1
 Django==5.1.7
+asgiref==3.8.1
 sqlparse==0.5.3
 tzdata==2025.1
-gunicorn
-django-extensions
-whitenoise
-django-filter
+django-filter==24.3
+django-extensions==3.2.3
+whitenoise==6.8.2
+gunicorn==23.0.0
