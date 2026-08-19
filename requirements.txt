@@ -5,3 +5,4 @@ tzdata==2025.1
 gunicorn
 django-extensions
 whitenoise
+django-filter
