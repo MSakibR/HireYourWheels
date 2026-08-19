@@ -1,0 +1,274 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #dae4e8, #82d2d5, #5fd1d4, #1c3342);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  flex-direction: column;
+}
+
+.container {
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  display: flex;
+  border-radius: 0; /* Remove rounded corners */
+  box-shadow: none; /* Remove box shadow */
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+  background: white;
+}
+
+.image-side,
+.form-side {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: all 0.6s ease-in-out;
+}
+
+.image-side {
+  background: #4a5d7e;
+  color: white;
+  padding: 40px;
+  text-align: center;
+  position: absolute;
+  height: 100%;
+  left: 0;
+}
+
+.image-side img {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.form-side {
+  background: white;
+  padding: 60px;
+  position: absolute;
+  height: 100%;
+  right: 0;
+}
+
+.form-side h2 {
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+.form-side input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.form-side button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form-side button:hover {
+  background: #4f46e5;
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-login .icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 5px;
+  transition: background 0.3s, transform 0.2s;
+  z-index: 1200;
+}
+
+.social-login .icon-button:hover {
+  background-color: #08478f;
+  transform: scale(1.1);
+}
+
+#icontext {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0px;
+  font-size: 0.85rem;
+}
+
+.signup-form,
+.login-form {
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.signup-form {
+  display: none;
+}
+
+.form-side.active-signup .signup-form {
+  display: block;
+}
+
+.form-side.active-signup .login-form {
+  display: none;
+}
+
+.form-side.active-login .login-form {
+  display: block;
+}
+
+.form-side.active-login .signup-form {
+  display: none;
+}
+
+.container.active .image-side {
+  left: 50%;
+}
+
+.container.active .form-side {
+  right: 50%;
+}
+
+
+/* Additional Styling for New Form Elements */
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-row input {
+  width: calc(50% - 7.5px);
+  padding: 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.full-width {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.role-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.role-btn {
+  padding: 10px 20px;
+  min-width: 150px; /* Ensures a fixed minimum width */
+  height: 40px; /* Fixed height */
+  border: 2px solid #ccc;
+  background-color: white;
+  color: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.role-btn.active {
+  background-color: rgb(0, 183, 255);
+  color: white;
+  border-color: rgb(6, 173, 179);
+}
+
+.role-btn:hover {
+  background-color: #005e94;
+}
+
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field input {
+  width: calc(100% - 30px); /* Adjust width to make it wider */
+  padding: 12px;
+  margin-right: 15px;
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.password-field .toggle-password {
+  position: absolute;
+  right: 30px;
+  top: 35%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.create-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.create-btn:hover {
+  background-color: #4f46e5;
+}
+
+.buttt {
+  background-color: #8f8d08;
+}
+
+.close-button-link {
+  text-decoration: none; /* Removes the default underline from the link */
+  color: #000000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px; /* Adjust the distance from the top */
+  right: 10px; /* Adjust the distance from the right */
+  border: none;
+  font-size: 20px;
+  color: #000000; /* Text color (white) */
+  cursor: pointer;
+  z-index: 9999; /* Ensures the button appears on top of other elements */
+}

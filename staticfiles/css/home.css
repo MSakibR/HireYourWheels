@@ -1,0 +1,112 @@
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 25px 0;
+  border-radius: 20px;
+  background: transparent; /* Ensure it doesn't override */
+  color: #1c3342; /* Dark blue text */
+  background: #e6edf0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto; /* Center the container */
+}
+
+.hero-content {
+  /* New wrapper for flexbox layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically align items */
+  padding: 50px;
+}
+
+.hero-left {
+  flex: 1; /* Takes up available space */
+  padding-right: 40px; /* Space between text and image */
+}
+
+.hero-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-left p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  /* Style the buttons container */
+  display: flex; /* Arrange buttons horizontally */
+}
+
+.blue-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.blue-button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.hero-right {
+  flex: 1;
+  position: relative;
+  height: 400px; /* Set a fixed height for the slider */
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures the entire image is visible */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  background: transparent; /* No background to maintain PNG transparency */
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.big-text {
+  font-size: 25px; /* Larger size */
+  font-family: "Arial", sans-serif; /* First font style */
+  font-weight: bold;
+}
+.small-text {
+  font-size: 20px; /* Smaller size */
+  font-family: "Courier New", monospace; /* Second font style */
+}
+
+.host-content {
+  display: flex;
+  flex-direction: column; /* Stack sections vertically */
+  width: 80%;
+  max-width: 1200px; /* Adjust based on your design */
+  margin: 60px auto;
+}
+
